@@ -17,6 +17,7 @@ namespace bonheur
         public List<Script> scripts = new List<Script>();
         public List<Layer> layers = new List<Layer>();
         public List<UI> UIs = new List<UI>();
+        public List<Entity> entities = new List<Entity>();
 
         public Color Background = new Color(99, 19, 237);
 
@@ -82,6 +83,11 @@ namespace bonheur
 
             UpdateUI();
             //RunScripts();
+
+            foreach (Entity entity in entities)
+            {
+                entity.Update(deltaTime);
+            }
         }
 
         public void UpdateUI()

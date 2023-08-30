@@ -8,6 +8,11 @@ namespace bonheur.UserInterface
         public Text text;
         public Color BaseColor = Color.White;
 
+        public Title()
+        {
+            text = new Text();
+        }
+
         public Title(string title, Font font)
         {
             text = new Text(title, font);

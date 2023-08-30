@@ -17,7 +17,7 @@ namespace bonheur.UserInterface
 
         private Animator Fade = new Animator();
 
-        public Sprite Icon;
+        public Sprite Icon = new Sprite();
 
         public bool MouseHover = false, Click = false, ActionDone = false;
 
@@ -27,6 +27,7 @@ namespace bonheur.UserInterface
         public Button()
         {
             Fade.To = 0.1f;
+            Label = new Title();
         }
 
         /// <summary>

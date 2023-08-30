@@ -24,17 +24,21 @@ namespace bonheur
         public static bool changed = false;
 
         ////////////// Main Menu
-        private static Title title;
-        private static Title bottomtitle;
-        private static Button button;
+        private static Title title = new Title();
+        private static Title bottomtitle = new Title();
+        private static Button button = new Button();
 
         ////////////// Level Choice
-        private static Title titlelevel;
-        private static Sprite lvl1;
-        private static Sprite lvl2;
-        private static Sprite lvl3;
-        private static Layer images;
-        private static Button backtomenu;
+        private static Title titlelevel = new Title();
+        private static Sprite lvl1 = new Sprite();
+        private static Sprite lvl2 = new Sprite();
+        private static Sprite lvl3 = new Sprite();
+        private static Layer images = new Layer();
+        private static Button backtomenu = new Button();
+
+        private static Button level1 = new Button();
+        private static Button level2 = new Button();
+        private static Button level3 = new Button();
 
         static void Main(string[] args)
         {
@@ -55,7 +59,7 @@ namespace bonheur
 
             Title t = new Title("Start", regularfont);
             t.SetCharacterSize(16);
-            button = new Button(new Vector2f(100, 216), t, new Vector2f(100, 40), ChangeState);
+            button = new Button(new Vector2f(100, 500), t, new Vector2f(100, 40), ChangeState);
             app.UIs.Add(button);
             titles.Objects.Add(button);
 
@@ -64,6 +68,35 @@ namespace bonheur
             titlelevel.SetCharacterSize(22);
             titlelevel.IsActive = false;
             titles.Objects.Add(titlelevel);
+
+            Title t2 = new Title("F#ck go back", regularfont);
+            t2.SetCharacterSize(16);
+            backtomenu = new Button(new Vector2f(620, 40), t2, new Vector2f(140, 40), StateBack);
+            app.UIs.Add(backtomenu);
+            backtomenu.IsActive = false;
+            app.UIs.Add(backtomenu);
+            titles.Objects.Add(backtomenu);
+
+            Title t3 = new Title("", regularfont);
+            t3.SetCharacterSize(16);
+            level1 = new Button(new Vector2f(40, 90), t3, new Vector2f(120, 120), Open1Level);
+            level1.IsActive = false;
+            app.UIs.Add(level1);
+            titles.Objects.Add(level1);
+
+            Title t4 = new Title("", regularfont);
+            t4.SetCharacterSize(16);
+            level2 = new Button(new Vector2f(180, 90), t3, new Vector2f(120, 120), Open1Level);
+            level2.IsActive = false;
+            app.UIs.Add(level2);
+            titles.Objects.Add(level2);
+
+            Title t5 = new Title("", regularfont);
+            t5.SetCharacterSize(16);
+            level3 = new Button(new Vector2f(320, 90), t3, new Vector2f(120, 120), Open1Level);
+            level3.IsActive = false;
+            app.UIs.Add(level3);
+            titles.Objects.Add(level3);
 
             lvl1 = new Sprite(new Texture(@"resources\placeholder.png"));
             lvl1.Position = new Vector2f(40, 90);
@@ -75,14 +108,6 @@ namespace bonheur
             lvl3.Position = new Vector2f(320, 90);
             images.Objects.Add(lvl3);
             images.IsActive = false;
-
-            Title t2 = new Title("F#ck go back", regularfont);
-            t2.SetCharacterSize(16);
-            backtomenu = new Button(new Vector2f(620, 40), t2, new Vector2f(140, 40), StateBack);
-            app.UIs.Add(backtomenu);
-            backtomenu.IsActive = false;
-            app.UIs.Add(backtomenu);
-            titles.Objects.Add(backtomenu);
 
             // Running scripts
             Console.WriteLine("Running scripts...");
@@ -133,6 +158,9 @@ namespace bonheur
             bottomtitle.IsActive = false;
             button.IsActive = false;
 
+            level1.IsActive = true;
+            level2.IsActive = true;
+            level3.IsActive = true;
             titlelevel.IsActive = true;
             images.IsActive = true;
             backtomenu.IsActive = true;
@@ -149,7 +177,26 @@ namespace bonheur
             titlelevel.IsActive = false;
             images.IsActive = false;
             backtomenu.IsActive = false;
+            level1.IsActive = false;
+            level2.IsActive = false;
+            level3.IsActive = false;
             Console.WriteLine("current state changed. now: main menu");
+        }
+
+        private static void Open1Level()
+        {
+            currentState = CurrentState.GameWorld;
+            titlelevel.IsActive = false;
+            images.IsActive = false;
+            backtomenu.IsActive = false;
+
+            titlelevel.IsActive = false;
+            images.IsActive = false;
+            backtomenu.IsActive = false;
+            level1.IsActive = false;
+            level2.IsActive = false;
+            level3.IsActive = false;
+            Console.WriteLine("current state changed. now: first level");
         }
     }
 }
