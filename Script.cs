@@ -20,7 +20,7 @@ namespace bonheur
         {
             if (Active)
             {
-                var options = ScriptOptions.Default.AddImports("System", "bonheur").AddReferences("System", "bonheur");
+                var options = ScriptOptions.Default.AddImports("System", "bonheur", "SFML").AddReferences("System", "bonheur", "SFML.Graphics", "SFML.System");
                 var script = CSharpScript.Create(code, options);
                 await script.RunAsync();
             }

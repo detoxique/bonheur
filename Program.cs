@@ -40,6 +40,11 @@ namespace bonheur
         private static Button level2 = new Button();
         private static Button level3 = new Button();
 
+        ////////////// Level 1
+        private static Layer entitiesLayer = new Layer();
+        private static float CharacterSpeed = 170;
+        private static Entity character;
+
         static void Main(string[] args)
         {
             ////// main menu
@@ -109,6 +114,10 @@ namespace bonheur
             images.Objects.Add(lvl3);
             images.IsActive = false;
 
+            // Level 1
+            app.layers.Add(entitiesLayer);
+            entitiesLayer.IsActive = false;
+
             // Running scripts
             Console.WriteLine("Running scripts...");
             app.RunScripts();
@@ -140,15 +149,54 @@ namespace bonheur
         /// </summary>
         static void Input()
         {
+            if (character != null)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.W))
+                {
+                    character.Position = new Vector2f(character.Position.X, character.Position.Y - CharacterSpeed * app.deltaTime);
+                }
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+                {
+                    character.Position = new Vector2f(character.Position.X - CharacterSpeed * app.deltaTime, character.Position.Y);
+                    character.FlipHorizontally = true;
+                }
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+                {
+                    character.Position = new Vector2f(character.Position.X, character.Position.Y + CharacterSpeed * app.deltaTime);
+                }
+                else if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+                {
+                    character.Position = new Vector2f(character.Position.X + CharacterSpeed * app.deltaTime, character.Position.Y);
+                    character.FlipHorizontally = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checking in-game triggers.
+        /// </summary>
+        static void CheckTriggers()
+        {
             
         }
 
         /// <summary>
-        /// Checking in-game triggers
+        /// Adding entity to the entities list.
         /// </summary>
-        static void CheckTriggers()
+        /// <param name="entity"></param>
+        public static void AddEntity(Entity entity)
         {
+            app.entities.Add(entity);
+            entitiesLayer.Objects.Add(entity);
+        }
 
+        /// <summary>
+        /// Setting character.
+        /// </summary>
+        /// <param name="entity"></param>
+        public static void SetCharacter(Entity entity)
+        {
+            character = entity;
         }
 
         private static void ChangeState()
@@ -157,6 +205,7 @@ namespace bonheur
             title.IsActive = false;
             bottomtitle.IsActive = false;
             button.IsActive = false;
+            entitiesLayer.IsActive = false;
 
             level1.IsActive = true;
             level2.IsActive = true;
@@ -180,6 +229,7 @@ namespace bonheur
             level1.IsActive = false;
             level2.IsActive = false;
             level3.IsActive = false;
+            titlelevel.IsActive = false;
             Console.WriteLine("current state changed. now: main menu");
         }
 
@@ -189,6 +239,8 @@ namespace bonheur
             titlelevel.IsActive = false;
             images.IsActive = false;
             backtomenu.IsActive = false;
+
+            entitiesLayer.IsActive = true;
 
             titlelevel.IsActive = false;
             images.IsActive = false;

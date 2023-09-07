@@ -125,7 +125,7 @@ namespace bonheur
             {
                 FPSclock.Restart();
                 fps = frames;
-                //Console.WriteLine("FPS: " + fps);
+                Console.WriteLine("FPS: " + fps);
                 frames = 0;
             }
         }

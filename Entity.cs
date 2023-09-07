@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace bonheur
 {
-    internal class Entity : Drawable
+    public class Entity : Drawable
     {
         public Vector2f Position;
         public Vector2f Size;
@@ -12,20 +12,36 @@ namespace bonheur
 
         public List<Animation> animationsList = new List<Animation>();
 
-        public bool IsAlive = true;
+        public bool IsAlive = true, FlipHorizontally = false;
 
         public Sprite CurrentFrame;
 
-        public Entity() 
-        { 
+        private float SpriteSizeMultiply = 1.0f;
 
+        public Entity(Vector2f position, Vector2f size) 
+        { 
+            Position = position;
+            Size = size;
         }
 
         public void Update(float deltaTime)
         {
-            animationsList[currentAnimation].Update(deltaTime);
-            CurrentFrame = animationsList[currentAnimation].GetSprite();
+            if (animationsList.Count > 0 && animationsList[currentAnimation] != null) // updating animation if it exists.
+            {
+                animationsList[currentAnimation].Update(deltaTime);
+                CurrentFrame = animationsList[currentAnimation].GetSprite();
+                if (FlipHorizontally != true)
+                    CurrentFrame.Scale = new Vector2f(SpriteSizeMultiply, SpriteSizeMultiply);
+                else
+                    CurrentFrame.Scale = new Vector2f(-SpriteSizeMultiply, SpriteSizeMultiply);
+            }
+            
             CurrentFrame.Position = Position;
+        }
+
+        public void SetSpriteScale(float scale)
+        {
+            SpriteSizeMultiply = scale;
         }
 
         public void SetCurrentAnimation(int animation)

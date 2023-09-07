@@ -22,11 +22,6 @@ namespace bonheur
 
         public float Speed;
 
-        public Animation()
-        {
-
-        }
-
         public Animation(Texture SpriteSheet, IntRect TextureRect, float Speed, int FramesCount, bool Loop)
         {
             this.SpriteSheet = SpriteSheet;
@@ -57,10 +52,10 @@ namespace bonheur
 
                 if (Loop && CurrentFrame > FramesCount)
                 {
-                    CurrentFrame = 0;
+                    CurrentFrame = 1;
                 }
             }
-            Frame = new IntRect(CurrentFrame * (FrameSize.Width + Step), 0, FrameSize.Width, FrameSize.Height);
+            Frame = new IntRect(CurrentFrame * (FrameSize.Width + Step), FrameSize.Top, FrameSize.Width, FrameSize.Height);
         }
 
         /// <summary>
@@ -108,6 +103,7 @@ namespace bonheur
         public Sprite GetSprite()
         {
             result.TextureRect = Frame;
+            result.Origin = new Vector2f(FrameSize.Width / 2, FrameSize.Height / 2);
             return result;
         }
     }
