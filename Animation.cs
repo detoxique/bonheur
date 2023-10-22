@@ -4,6 +4,11 @@ using bonheur;
 
 namespace bonheur
 {
+    public enum AnimationDirection
+    {
+        Right, Down
+    }
+
     public class Animation
     {
         public IntRect FrameSize;
@@ -11,6 +16,8 @@ namespace bonheur
         public Texture SpriteSheet;
         public Sprite result = new Sprite();
         public int Step = 0;
+        private Vector2f startPosition = new Vector2f();
+        public Vector2f Origin { get; set; }
 
         public bool IsPlaying = true, Loop = false;
 
@@ -22,7 +29,9 @@ namespace bonheur
 
         public float Speed;
 
-        public Animation(Texture SpriteSheet, IntRect TextureRect, float Speed, int FramesCount, bool Loop)
+        public AnimationDirection Direction { get; set; } = AnimationDirection.Right;
+
+        public Animation(Texture SpriteSheet, IntRect TextureRect, float Speed, int FramesCount, bool Loop, AnimationDirection animationDirection)
         {
             this.SpriteSheet = SpriteSheet;
             FrameSize = TextureRect;
@@ -30,6 +39,8 @@ namespace bonheur
             this.FramesCount = FramesCount;
             this.Loop = Loop;
             result.Texture = SpriteSheet;
+            startPosition = new Vector2f(TextureRect.Left, TextureRect.Top);
+            Direction = animationDirection;
         }
 
         /// <summary>
@@ -52,10 +63,18 @@ namespace bonheur
 
                 if (Loop && CurrentFrame > FramesCount)
                 {
-                    CurrentFrame = 1;
+                    CurrentFrame = 0;
+                }
+
+                if (!IsPlaying)
+                {
+                    CurrentFrame = FramesCount;
                 }
             }
-            Frame = new IntRect(CurrentFrame * (FrameSize.Width + Step), FrameSize.Top, FrameSize.Width, FrameSize.Height);
+            if (Direction == AnimationDirection.Right)
+                Frame = new IntRect((int)startPosition.X + CurrentFrame * (FrameSize.Width + Step), FrameSize.Top, FrameSize.Width, FrameSize.Height);
+            else
+                Frame = new IntRect(FrameSize.Left, (int)startPosition.Y + CurrentFrame * (FrameSize.Height + Step), FrameSize.Width, FrameSize.Height);
         }
 
         /// <summary>
@@ -103,7 +122,7 @@ namespace bonheur
         public Sprite GetSprite()
         {
             result.TextureRect = Frame;
-            result.Origin = new Vector2f(FrameSize.Width / 2, FrameSize.Height / 2);
+            //result.Origin = Origin;
             return result;
         }
     }

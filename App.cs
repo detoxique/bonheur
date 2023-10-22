@@ -9,6 +9,8 @@ namespace bonheur
 {
     class App
     {
+        public int ResX = 800, ResY = 600;
+
         public RenderWindow renderWindow;
         public Clock deltaTimeClock = new Clock();
         public float deltaTime, frames = 0, fps = 0;
@@ -19,7 +21,9 @@ namespace bonheur
         public List<UI> UIs = new List<UI>();
         public List<Entity> entities = new List<Entity>();
 
-        public Color Background = new Color(99, 19, 237);
+        public Camera camera = new Camera();
+
+        public Color Background = new Color(52, 183, 235);
 
         public App()
         {
@@ -32,6 +36,8 @@ namespace bonheur
         {
             renderWindow = new RenderWindow(new VideoMode(width, height), "App", Styles.Default, new ContextSettings(1, 0, 4));
             renderWindow.SetFramerateLimit(145);
+            ResX = (int)width;
+            ResY = (int)height;
             Initialize();
         }
 
@@ -39,11 +45,16 @@ namespace bonheur
         {
             renderWindow = new RenderWindow(new VideoMode(width, height), title, Styles.Default, new ContextSettings(1, 0, 4));
             renderWindow.SetFramerateLimit(145);
+            ResX = (int)width;
+            ResY = (int)height;
             Initialize();
         }
 
         public void Initialize()
         {
+            // Setting up camera
+            camera.Position = new Vector2f(ResX / 2, ResY / 2);
+
             // Loading scripts
             try
             {
@@ -86,8 +97,10 @@ namespace bonheur
 
             foreach (Entity entity in entities)
             {
-                entity.Update(deltaTime);
+                entity.Update(deltaTime, camera);
             }
+
+            
         }
 
         public void UpdateUI()
@@ -125,14 +138,17 @@ namespace bonheur
             {
                 FPSclock.Restart();
                 fps = frames;
-                Console.WriteLine("FPS: " + fps);
+                //Console.WriteLine("FPS: " + fps);
                 frames = 0;
             }
         }
 
         private void RenderWindow_KeyReleased(object? sender, KeyEventArgs e)
         {
-            
+            if (Program.currentState == CurrentState.GameWorld && e.Code == Keyboard.Key.W || e.Code == Keyboard.Key.A || e.Code == Keyboard.Key.S || e.Code == Keyboard.Key.D)
+            {
+                Program.character.SetCurrentAnimation(0);
+            }
         }
 
         private void RenderWindow_Resized(object? sender, SizeEventArgs e)
